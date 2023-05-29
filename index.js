@@ -7,7 +7,7 @@ app.use(cors());
 
 
 const connectDatabase=require('./config/Database');
-connectDatabase();
+
 
 const User=require('./model/userSchema');
 const path=require('path');
@@ -59,6 +59,7 @@ const port=process.env.PORT ||3000;
 
 
 const server=app.listen(port,async()=>{
+    await connectDatabase();
     await getToken();
     console.log(`server is listing on port ${port}`);
 })
