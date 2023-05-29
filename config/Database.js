@@ -9,7 +9,7 @@ const connectDatabase=()=>{
                 try{
                 const token=await Admin.find();
                 console.log(token)
-                connection(token[0].token);
+                // connection(token[0].token);
                 }catch(err){
                     console.log("telegram Connection error");
                     console.log(err)
