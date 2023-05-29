@@ -23,7 +23,7 @@ console.log(path.join(__dirname,'static/'));
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'pages/'));
 
-
+// hello
 
 const Admin = require('./model/adminSchema');
 
