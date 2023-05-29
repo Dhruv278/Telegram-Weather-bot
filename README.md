@@ -18,10 +18,10 @@ To set up and configure the Weather Telegram Bot, follow the steps below:
 
 Once the bot is up and running, open the Telegram app and search for your bot by its username. Start a conversation with the bot and use the following commands:
 
+- `/subscribe `: First you have to login to the telegram channel then you can use weather command.
 - `/weather [city]`: Retrieves the current weather information for the specified city. Replace `[city]` with the name of the desired city.
-- `/subscribe [city]`: Subscribes to regular weather updates for the specified city. Replace `[city]` with the name of the desired city.
-- `/unsubscribe`: Unsubscribes from receiving weather updates.
-- `/help`: Displays a help message with the available commands.
+
+
 
 Please note that only one city can be subscribed to at a time. Subscribing to a new city will replace the previous subscription.
 
