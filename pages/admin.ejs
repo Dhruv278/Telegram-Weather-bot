@@ -180,7 +180,7 @@
                 token,
                 oldToken
             };
-            fetch("http://127.0.0.1:3000/admin/changeToken", {
+            fetch("https://telegram-weather-bot-git-main-dhruv278.vercel.app/admin/changeToken", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -211,7 +211,7 @@
             var row = userList.querySelector(`tr[data-id="${userId}"]`);
             console.log(row)
             userList.removeChild(row);
-            fetch("http://127.0.0.1:3000/admin/changeStatus", {
+            fetch("https://telegram-weather-bot-git-main-dhruv278.vercel.app/admin/changeStatus", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -258,7 +258,7 @@
                 userId: userId
             };
            
-            fetch("http://127.0.0.1:3000/admin/changeStatus", {
+            fetch("https://telegram-weather-bot-git-main-dhruv278.vercel.app/admin/changeStatus", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -306,7 +306,7 @@
             var formData = {
                 userId: userId
             };
-            fetch("http://127.0.0.1:3000/admin/deleteUser", {
+            fetch("https://telegram-weather-bot-git-main-dhruv278.vercel.app/admin/deleteUser", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -316,7 +316,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if(data.status==='success'){
-                        
+
                         // Remove user from the user list
                         var userList = document.getElementById("userList");
                         var row = userList.querySelector(`tr[data-id="${userId}"]`);

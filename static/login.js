@@ -13,7 +13,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     };
 
     // Send the form data to the backend API
-    fetch("http://127.0.0.1:3000/admin/login", {
+    fetch("https://telegram-weather-bot-git-main-dhruv278.vercel.app/admin/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -25,7 +25,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
       // Handle the response from the backend
       if(data.status==='success'){
         localStorage.setItem("Admin","LoggedIn");
-        window.location.href = "http://127.0.0.1:3000/admin/adminpage";
+        window.location.href = "https://telegram-weather-bot-git-main-dhruv278.vercel.app/adminpage";
 
       }else{
         alert(data.message);
