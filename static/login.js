@@ -25,7 +25,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
       // Handle the response from the backend
       if(data.status==='success'){
         localStorage.setItem("Admin","LoggedIn");
-        window.location.href = "https://telegram-weather-bot-git-main-dhruv278.vercel.app/adminpage";
+        window.location.href = "https://telegram-weather-bot-git-main-dhruv278.vercel.app/admin/adminpage";
 
       }else{
         alert(data.message);
