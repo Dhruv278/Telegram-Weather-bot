@@ -5,9 +5,9 @@ const app=express();
 var cors = require("cors");
 app.use(cors());
 
-
+const TelegramBot = require('node-telegram-bot-api');
 const connectDatabase=require('./config/Database');
-
+connectDatabase()
 
 const User=require('./model/userSchema');
 const path=require('path');
@@ -36,7 +36,7 @@ const Admin = require('./model/adminSchema');
 // replace the value below with the Telegram token you receive from @BotFather
 const getToken=async()=>{
     try{
-    await connectDatabase();
+  
     const token=await Admin.find();
      bot = new TelegramBot(token[0].token, { polling: true });
 
