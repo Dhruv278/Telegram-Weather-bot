@@ -7,7 +7,7 @@ exports.connection = async (token) => {
 
     const bot = new TelegramBot(token, { polling: true });
 
-     console.log("hello from telegram pages")
+    //  console.log("hello from telegram pages")
     bot.onText(/\/start/, (msg) => {
         const chatId = msg.chat.id;
         // Send the pre-generated message to the user
