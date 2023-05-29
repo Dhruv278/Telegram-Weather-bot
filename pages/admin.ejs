@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+    <script src="../admin.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .form-group button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .user-list {
+            margin-top: 30px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .user-list th,
+        .user-list td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .user-list th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .user-list td.actions button {
+            padding: 6px 10px;
+            margin-right: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .user-list td.actions button.delete {
+            background-color: #f44336;
+        }
+
+        .user-list td.actions button.block {
+            background-color: #ff9800;
+        }
+
+        .blocked-users {
+            margin-top: 30px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Admin Page</h2>
+        <div class="form-group">
+            <label for="key">Key</label>
+            <input type="text" id="key" name="oldToken" readonly value="<%=token%>">
+        </div>
+        <div class="form-group">
+            <label for="value">Enter new token </label>
+            <input type="text" id="value" name="newToken">
+            <button id="updateButton" style="margin: 10px;">Update</button>
+        </div>
+        <table class="user-list">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userList">
+                <%for (var user of totalActiveUsers){ %>
+                    <tr data-id="<%=user.userId %>">
+                        <td>
+                            <%= user.userId %>
+                        </td>
+                        <td>
+                            <%= user.first_name %>
+                        </td>
+                        <td>
+                            <%= user.last_name %>
+                        </td>
+                        <td class="actions">
+                            <button class="block" onclick='blockUser("<%=user.userId%>")'>Block</button>
+                            <button class="delete" onclick='deleteUser("<%=user.userId%>")'>Delete</button>
+                        </td>
+                       </tr>
+                    <% } %>
+            </tbody>
+        </table>
+        <div class="blocked-users" id="blockedUsers">
+            <h3>Blocked Users</h3>
+            <table class="user-list">
+                <thead>
+                    <tr >
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="blockedUserList">
+                    <%for (var user of totalBlockedUsers){  %>
+                        <tr data-id="<%=user.userId %>">
+                            <td><%= user.userId %></td>
+                            <td><%= user.first_name %></td>
+                            <td><%= user.last_name %></td>
+                            <td class="actions">
+                                <button onclick='unblockUser("<%=user.userId%>")'>Unblock</button>
+                            </td>
+                           </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        var keyValue = {
+            key: "Some Key",
+            value: "Some Value"
+        };
+
+
+
+        // Initialize the page
+
+        // Update key-value and send to backend
+        document.getElementById("updateButton").addEventListener("click", function () {
+          
+            var token = document.getElementById("value").value;
+            var oldToken = document.getElementById("key").value;
+            var formData = {
+                token,
+                oldToken
+            };
+            fetch("http://127.0.0.1:3000/admin/changeToken", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status==='success'){
+                        document.getElementById("key").value = `${data.token}`;
+                        document.getElementById("value").value = ``;
+                    }
+
+                })
+                .catch(err=>{})
+        
+        });
+
+        // Block user and move to blocked user list
+        function blockUser(userId) {
+
+            // sending request to backend to block the user and in return it send me user data 
+            var formData = {
+                userId: userId
+            };
+            var userList = document.getElementById("userList");
+            console.log(userList);
+            var row = userList.querySelector(`tr[data-id="${userId}"]`);
+            console.log(row)
+            userList.removeChild(row);
+            fetch("http://127.0.0.1:3000/admin/changeStatus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the backend
+                    console.log(data); // You can perform actions based on the response here
+                    const user = data.user;
+                    var blockedUserList = document.getElementById("blockedUserList");
+                    var newRow = blockedUserList.insertRow();
+                    newRow.innerHTML = `
+                <td>${user.userId}</td>
+                <td>${user.first_name}</td>
+                <td>${user.last_name}</td>
+                <td class="actions">
+                  <button onclick="unblockUser(${user.userId})">Unblock</button>
+                </td>
+              `;
+              newRow.setAttribute("data-id",user.userId);
+
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+
+            // Remove user from the user list
+           
+
+            // Add user to the blocked user list
+
+
+            // Show the blocked user list
+            document.getElementById("blockedUsers").style.display = "block";
+        }
+
+
+        // Unblock user and move back to user list
+        function unblockUser(userId) {
+            console.log(userId )
+            var formData = {
+                userId: userId
+            };
+           
+            fetch("http://127.0.0.1:3000/admin/changeStatus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the backend
+                    console.log(data); // You can perform actions based on the response here
+                    const user = data.user;
+                    var blockedUserList = document.getElementById("blockedUserList");
+                    var row = blockedUserList.querySelector(`tr[data-id="${userId}"]`);
+                    blockedUserList.removeChild(row);
+                    var userList = document.getElementById("userList");
+                    var newRow = userList.insertRow();
+                    newRow.innerHTML = `
+             <td>${user.userId}</td>
+             <td>${user.first_name}</td>
+             <td>${user.last_name}</td>
+             <td class="actions">
+               <button class="block" onclick="blockUser(${user.userId})">Block</button>
+               <button class="delete" onclick="deleteUser(${user.userId})">Delete</button>
+             </td>
+           `;
+           newRow.setAttribute("data-id",user.userId);
+
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+
+
+
+
+            // Hide the blocked user list if no more blocked users
+            if (blockedUserList.rows.length === 0) {
+                document.getElementById("blockedUsers").style.display = "none";
+            }
+
+        }
+
+        // Delete user from the user list
+        function deleteUser(userId) {
+            var formData = {
+                userId: userId
+            };
+            fetch("http://127.0.0.1:3000/admin/deleteUser", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status==='success'){
+                        
+                        // Remove user from the user list
+                        var userList = document.getElementById("userList");
+                        var row = userList.querySelector(`tr[data-id="${userId}"]`);
+                    userList.removeChild(row);
+                    }
+                })
+                .catch(err=>{})
+              
+          
+        }
+    </script>
+   
+</body>
+
+</html>
