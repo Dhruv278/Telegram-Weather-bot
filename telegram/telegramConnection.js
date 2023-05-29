@@ -1,8 +1,8 @@
 
 const TelegramBot = require('node-telegram-bot-api');
+const axios = require('axios')
 const User = require('./../model/userSchema')
 const Admin = require('../model/adminSchema');
-const axios = require('axios')
 exports.connection = async (token) => {
 
     const bot = new TelegramBot(token, { polling: true });
