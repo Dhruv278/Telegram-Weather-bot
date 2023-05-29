@@ -33,7 +33,7 @@ app.set('views',path.join(__dirname,'pages/'));
 
 const Admin = require('./model/adminSchema');
 
-// replace the value below with the Telegram token you receive from @BotFather
+// set up telegram bot
 const getToken=async()=>{
     try{
   

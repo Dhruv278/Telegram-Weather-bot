@@ -4,6 +4,7 @@ const Admin=require('../model/adminSchema');
 const User=require('../model/userSchema');
 
 
+// for admin login 
 router.post('/login',async(req,res)=>{
     // await createAdmin();
     const username=req.body.username;
@@ -24,6 +25,9 @@ router.post('/login',async(req,res)=>{
     }
    
 })
+
+
+// .change token value
 router.post('/changeToken',async(req,res)=>{
     const newToken=req.body.token;
     const oldToken=req.body.oldToken;
@@ -36,6 +40,8 @@ router.post('/changeToken',async(req,res)=>{
     })
 })
 
+
+// send admin page
 router.get('/adminpage',async(req,res)=>{
     const users=await User.find();
     const totalActiveUsers=users.filter(user=>user.status==='Active')
