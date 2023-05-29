@@ -1,6 +1,11 @@
 const express=require('express');
 const dotenv=require("dotenv");
 dotenv.config({path:"./config/config.env"});
+
+var cors = require("cors");
+app.use(cors());
+
+
 const connectDatabase=require('./config/Database');
 connectDatabase();
 
