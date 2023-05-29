@@ -1,7 +1,7 @@
 const express=require('express');
 const dotenv=require("dotenv");
 dotenv.config({path:"./config/config.env"});
-
+const app=express();
 var cors = require("cors");
 app.use(cors());
 
@@ -11,7 +11,7 @@ connectDatabase();
 
 const User=require('./model/userSchema');
 const path=require('path');
-const app=express();
+
 const viewRouters=require('./routes/views');
 const adminRoutes=require('./routes/admin')
 const {connection}=require('./telegram/telegramConnection')
