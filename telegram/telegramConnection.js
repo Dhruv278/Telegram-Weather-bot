@@ -3,10 +3,9 @@ const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios')
 const User = require('./../model/userSchema')
 const Admin = require('../model/adminSchema');
-exports.connection = async (token) => {
+exports.connection = async (bot ) => {
 
-    const bot = new TelegramBot(token, { polling: true });
-
+    
     //  console.log("hello from telegram pages")
     bot.onText(/\/start/, (msg) => {
         const chatId = msg.chat.id;
