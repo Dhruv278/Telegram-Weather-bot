@@ -51,7 +51,6 @@ getToken();
 
 // Create a bot that uses 'polling' to fetch new updates
 
-
 // Apis
 app.use('/',viewRouters);
 app.use('/admin',adminRoutes);
